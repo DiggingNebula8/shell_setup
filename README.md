@@ -77,14 +77,14 @@ scoop bucket add extras
 scoop bucket add nerd-fonts
 
 # Install development tools
-scoop install vscode starship CascadiaCode-NF-Mono python
+scoop install starship CascadiaCode-NF-Mono python
 ```
 
 **Verification**:
 
 ```powershell
 scoop list
-# Should show git, vscode, starship, etc.
+# Should show git, starship, etc.
 ```
 
 ---
@@ -122,6 +122,8 @@ Invoke-Expression (&starship init powershell)
 **Verification**: Restart PowerShell. You should see a styled prompt with context-aware information.
 
 ---
+
+> ⚠️ **REQUIRED**: Make sure you install VSCode from the Installer, not Scoop.
 
 ## Part 2: WSL2 & Debian Setup
 
