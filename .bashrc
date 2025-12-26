@@ -156,7 +156,7 @@ alias pipf='pip freeze > requirements.txt'
 # System
 alias c='clear'
 alias h='history'
-alias j='jobs -l'
+alias jbs='jobs -l'  # 'j' is reserved for autojump
 alias path='echo -e ${PATH//:/\\n}'
 alias ports='netstat -tulanp'
 alias update='sudo apt update && sudo apt upgrade -y'
@@ -311,6 +311,7 @@ help-aliases() {
     echo "  cat     - bat (better cat)"
     echo "  c       - clear"
     echo "  h       - history"
+    echo "  jbs     - jobs -l (list jobs)"
     echo "  path    - Show PATH entries"
     echo "  extract - Extract any archive"
     echo "  myip    - Get public IP"
