@@ -1,0 +1,121 @@
+# Fancy Modern Starship Config
+# Clean style with no backgrounds - easy to read
+
+command_timeout = 500
+add_newline = true
+
+# Clean format without background colors
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$fill\
+$cmd_duration\
+$time
+$character"""
+
+# Fill the gap between left and right
+[fill]
+symbol = " "
+
+# Directory - bold cyan, no background
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold cyan"
+read_only = " [RO]"
+read_only_style = "bold red"
+home_symbol = "~"
+
+# Git branch - purple
+[git_branch]
+symbol = ""
+format = "on [$branch(:$remote_branch)]($style) "
+style = "bold purple"
+
+# Git status - red/green
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "bold red"
+conflicted = "!"
+ahead = "^${count}"
+behind = "v${count}"
+diverged = "^${ahead_count}v${behind_count}"
+untracked = "?${count}"
+stashed = "=${count}"
+modified = "*${count}"
+staged = "+${count}"
+renamed = "r${count}"
+deleted = "x${count}"
+
+# Python - yellow
+[python]
+symbol = "py:"
+format = '[$symbol($version )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+pyenv_version_name = false
+
+# Node.js - green
+[nodejs]
+symbol = "node:"
+format = "[$symbol$version ]($style)"
+style = "bold green"
+
+# Rust - red
+[rust]
+symbol = "rs:"
+format = "[$symbol$version ]($style)"
+style = "bold red"
+
+# Go - cyan
+[golang]
+symbol = "go:"
+format = "[$symbol$version ]($style)"
+style = "bold cyan"
+
+# Command duration - shows on slow commands
+[cmd_duration]
+min_time = 1000
+format = "[$duration]($style)"
+style = "bold yellow"
+show_milliseconds = false
+
+# Time on the right
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "white"
+time_format = "%H:%M"
+
+# Prompt character
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"
+vimcmd_symbol = "[<](bold purple)"
+
+# Disabled modules
+[os]
+disabled = true
+
+[battery]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[package]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[aws]
+disabled = true
