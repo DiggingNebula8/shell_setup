@@ -100,6 +100,37 @@ function path { $env:PATH -split ';' }
 function myip { (Invoke-WebRequest -Uri 'https://ipinfo.io/ip' -UseBasicParsing).Content.Trim() }
 function weather($location = '') { (Invoke-WebRequest -Uri "https://wttr.in/$location`?format=3" -UseBasicParsing).Content }  # empty = auto-detect
 
+# CMake & Ninja
+function cmk { cmake -G Ninja -B build $args }
+function cmkd { cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug $args }
+function cmkr { cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release $args }
+function cmkb { cmake --build build $args }
+function cmkclean { Remove-Item -Recurse -Force build -ErrorAction SilentlyContinue }
+function nb { ninja -C build $args }
+
+# Visual Studio Developer Environment
+function Enter-VSEnv {
+    $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    if (-not (Test-Path $vswhere)) {
+        Write-Host "Visual Studio Installer not found. Install VS from https://visualstudio.microsoft.com/" -ForegroundColor Red
+        return
+    }
+    
+    $vsPath = & $vswhere -property installationPath -latest
+    if (-not $vsPath) {
+        Write-Host "No Visual Studio installation found. Install VS with C++ workload." -ForegroundColor Red
+        return
+    }
+    
+    $devShell = "$vsPath\Common7\Tools\Launch-VsDevShell.ps1"
+    if (-not (Test-Path $devShell)) {
+        Write-Host "VS Developer Shell not found. Reinstall VS with C++ workload." -ForegroundColor Red
+        return
+    }
+    
+    & $devShell -Arch amd64 -SkipAutomaticLocation
+}
+
 # ============================================================
 # Custom Functions
 # ============================================================
@@ -198,6 +229,15 @@ function help-aliases {
     Write-Host "  weather   - Get weather forecast"
     Write-Host "  disk-usage - Show disk usage"
     Write-Host "  new-project - Create new Python project"
+    
+    Write-Host "`n=== CMake & Ninja ===" -ForegroundColor Yellow
+    Write-Host "  cmk       - Configure with Ninja"
+    Write-Host "  cmkd      - Configure Debug build"
+    Write-Host "  cmkr      - Configure Release build"
+    Write-Host "  cmkb      - Build project"
+    Write-Host "  cmkclean  - Remove build directory"
+    Write-Host "  nb        - Ninja build"
+    Write-Host "  Enter-VSEnv - Load VS C++ environment"
     
     Write-Host "`n=== Config ===" -ForegroundColor Yellow
     Write-Host "  ep      - Edit profile"

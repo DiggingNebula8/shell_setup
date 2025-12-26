@@ -78,14 +78,14 @@ scoop bucket add extras
 scoop bucket add nerd-fonts
 
 # Install development tools
-scoop install starship CascadiaCode-NF-Mono python
+scoop install starship CascadiaCode-NF-Mono python cmake ninja
 ```
 
 **Verification**:
 
 ```powershell
 scoop list
-# Should show git, starship, etc.
+# Should show git, starship, python, cmake, ninja, etc.
 ```
 
 ---
@@ -125,6 +125,59 @@ Invoke-Expression (&starship init powershell)
 ---
 
 > ⚠️ **REQUIRED**: Install VSCode from Installer, not Scoop.
+
+### 1.5 Install Visual Studio & C++ Build Tools
+
+**Why**: Required for building native C/C++ projects (e.g., Aseprite, game engines, Python extensions with C code).
+
+**Environment**: Windows  
+**Privilege**: Administrator
+
+#### Option A: Visual Studio Community (Recommended)
+
+1. Download from [visualstudio.microsoft.com](https://visualstudio.microsoft.com/)
+2. Run the installer and select **"Desktop development with C++"** workload
+3. Ensure these components are selected:
+   - MSVC v143 (or latest) - C++ compiler
+   - Windows 11 SDK (or Windows 10 SDK)
+   - C++ CMake tools for Windows
+
+**Current Version**: Visual Studio 2026 (v18.x) or Visual Studio 2022 (v17.x)
+
+#### Option B: Build Tools Only (Lighter, ~4GB)
+
+```powershell
+winget install Microsoft.VisualStudio.2022.BuildTools --override "--wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+```
+
+#### Using MSVC in PowerShell
+
+MSVC tools (`cl`, `link`, `nmake`) are **not** in PATH by default. You must load the Visual Studio Developer environment first.
+
+**Option 1: Use Developer PowerShell** (from Start Menu)
+- Search for "Developer PowerShell for VS 2026" (or 2022)
+
+**Option 2: Load VS environment on-demand** (add to your profile)
+
+```powershell
+function Enter-VSEnv {
+    # Find VS installation path
+    $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -property installationPath
+    & "$vsPath\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -SkipAutomaticLocation
+}
+```
+
+Then run `Enter-VSEnv` before building C++ projects.
+
+**Verification**:
+
+```powershell
+Enter-VSEnv
+where.exe cl
+# Should show path to cl.exe
+```
+
+---
 
 ## Part 2: WSL2 & Debian Setup
 
@@ -462,6 +515,7 @@ This profile includes:
 - Navigation aliases (`..`, `...`, `mkcd`)
 - Git shortcuts (`gs`, `ga`, `gc`, `gp`, `glog`)
 - Python helpers (`py`, `va`, `vd`)
+- CMake/Ninja shortcuts (`cmk`, `cmkd`, `cmkr`, `cmkb`, `nb`)
 - Custom functions (`new-project`, `which`, `disk-usage`)
 
 Apply changes: Close and reopen PowerShell
@@ -476,6 +530,9 @@ Apply changes: Close and reopen PowerShell
 **Privilege**: User (with sudo)
 
 ```bash
+# Install build tools
+sudo apt install -y cmake ninja-build
+
 # Install modern replacements for classic tools
 sudo apt install -y \
   fzf \           # Fuzzy finder
@@ -520,6 +577,7 @@ This configuration includes:
 - **Navigation**: `..`, `...`, `mkcd`, autojump
 - **Git shortcuts**: `gs`, `ga`, `gc`, `gp`, `glog`, `gstash`
 - **Python**: `py`, `va`, `vd`, `pipr`, `pipf`
+- **CMake/Ninja**: `cmk`, `cmkd`, `cmkr`, `cmkb`, `cmkclean`, `nb`
 - **Functions**: `extract()`, `new-project()`, `myip()`, `weather()`
 - **FZF**: Dracula-themed fuzzy finder with ripgrep integration
 - **Colored man pages**

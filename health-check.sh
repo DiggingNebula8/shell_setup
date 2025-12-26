@@ -66,6 +66,11 @@ echo "--- VS Code ---"
 check "VS Code (code)" "code"
 
 echo ""
+echo "--- Build Tools ---"
+check "CMake" "cmake"
+check "Ninja" "ninja"
+
+echo ""
 echo "--- Config Files ---"
 check_file "~/.bashrc" "$HOME/.bashrc"
 check_file "Starship config" "$HOME/.config/starship.toml"

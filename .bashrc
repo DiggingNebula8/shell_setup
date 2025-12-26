@@ -161,6 +161,14 @@ alias path='echo -e ${PATH//:/\\n}'
 alias ports='netstat -tulanp'
 alias update='sudo apt update && sudo apt upgrade -y'
 
+# CMake & Ninja
+alias cmk='cmake -G Ninja -B build'
+alias cmkd='cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug'
+alias cmkr='cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release'
+alias cmkb='cmake --build build'
+alias cmkclean='rm -rf build'
+alias nb='ninja -C build'
+
 # Quick edits
 alias bashrc='nano ~/.bashrc'
 alias reload='source ~/.bashrc'
@@ -317,6 +325,14 @@ help-aliases() {
     echo "  myip    - Get public IP"
     echo "  weather - Get weather forecast"
     echo "  update  - apt update && upgrade"
+    
+    echo -e "\n\e[33m=== CMake & Ninja ===\e[0m"
+    echo "  cmk      - Configure with Ninja"
+    echo "  cmkd     - Configure Debug build"
+    echo "  cmkr     - Configure Release build"
+    echo "  cmkb     - Build project"
+    echo "  cmkclean - Remove build directory"
+    echo "  nb       - Ninja build"
     
     echo -e "\n\e[33m=== Config ===\e[0m"
     echo "  bashrc  - Edit ~/.bashrc"

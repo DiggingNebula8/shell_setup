@@ -79,6 +79,11 @@ Write-Host "--- VS Code ---" -ForegroundColor Yellow
 Check-Command "VS Code (code)" "code"
 
 Write-Host ""
+Write-Host "--- Build Tools ---" -ForegroundColor Yellow
+Check-Command "CMake" "cmake"
+Check-Command "Ninja" "ninja"
+
+Write-Host ""
 Write-Host "--- Config Files ---" -ForegroundColor Yellow
 Check-File "PowerShell Profile" $PROFILE
 Check-File "Starship config" "$HOME\.config\starship.toml"
