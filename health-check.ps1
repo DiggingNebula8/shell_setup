@@ -82,6 +82,8 @@ Write-Host ""
 Write-Host "--- Build Tools ---" -ForegroundColor Yellow
 Check-Command "CMake" "cmake"
 Check-Command "Ninja" "ninja"
+Check-Command "Clang" "clang"
+Check-Command "pre-commit" "pre-commit"
 
 Write-Host ""
 Write-Host "--- Config Files ---" -ForegroundColor Yellow

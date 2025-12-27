@@ -69,6 +69,8 @@ echo ""
 echo "--- Build Tools ---"
 check "CMake" "cmake"
 check "Ninja" "ninja"
+check "Clang" "clang"
+check "pre-commit" "pre-commit"
 
 echo ""
 echo "--- Config Files ---"
