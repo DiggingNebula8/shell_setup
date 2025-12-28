@@ -78,17 +78,17 @@ scoop bucket add extras
 scoop bucket add nerd-fonts
 
 # Install development tools
-scoop install starship CascadiaCode-NF-Mono python cmake ninja llvm
+scoop install starship CascadiaCode-NF-Mono python cmake ninja llvm mingw make scons
 
-# Install pre-commit (via pip, as it's a Python tool)
-pip install pre-commit
+# Install Python-based tools (pre-commit, scons for Godot/game engines)
+pip install pre-commit scons
 ```
 
 **Verification**:
 
 ```powershell
 scoop list
-# Should show git, starship, python, cmake, ninja, llvm, etc.
+# Should show git, starship, python, cmake, ninja, llvm, mingw, make, scons, etc.
 
 pre-commit --version
 # Should show pre-commit version
@@ -537,10 +537,10 @@ Apply changes: Close and reopen PowerShell
 
 ```bash
 # Install build tools
-sudo apt install -y cmake ninja-build clang
+sudo apt install -y cmake ninja-build clang gcc g++ make scons
 
-# Install pre-commit (via pip)
-pip install pre-commit
+# Install Python-based tools (pre-commit, scons for Godot/game engines)
+pip install pre-commit scons
 
 # Install modern replacements for classic tools
 sudo apt install -y \

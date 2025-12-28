@@ -83,6 +83,9 @@ Write-Host "--- Build Tools ---" -ForegroundColor Yellow
 Check-Command "CMake" "cmake"
 Check-Command "Ninja" "ninja"
 Check-Command "Clang" "clang"
+Check-Command "GCC" "gcc"
+Check-Command "Make" "make"
+Check-Command "SCons" "scons"
 Check-Command "pre-commit" "pre-commit"
 
 Write-Host ""

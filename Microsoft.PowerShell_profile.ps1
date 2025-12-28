@@ -65,19 +65,19 @@ Set-Alias -Name ls -Value Get-ChildItem -Option AllScope
 function ll { Get-ChildItem -Force | Format-Wide -Column 4 }
 function la { Get-ChildItem -Force }
 
-# Git shortcuts
-function gs { git status }
-function ga { git add $args }
-function gc { git commit -m $args }
-function gp { git push }
-function gpl { git pull }
-function gd { git diff }
-function gco { git checkout $args }
-function gb { git branch $args }
-function glog { git log --oneline --graph --decorate --all }
-function gclean { git clean -fd }
-function gstash { git stash }
-function gpop { git stash pop }
+# Git shortcuts (gg prefix to avoid conflict with PowerShell built-ins like gc, gp)
+function ggs { git status }
+function gga { git add $args }
+function ggc { git commit -m $args }
+function ggp { git push }
+function ggpl { git pull }
+function ggd { git diff }
+function ggco { git checkout $args }
+function ggb { git branch $args }
+function gglog { git log --oneline --graph --decorate --all }
+function ggclean { git clean -fd }
+function ggstash { git stash }
+function ggpop { git stash pop }
 
 # Python shortcuts
 function py { python $args }
@@ -195,18 +195,18 @@ function help-aliases {
     Write-Host "  la      - List all including hidden"
     
     Write-Host "`n=== Git ===" -ForegroundColor Yellow
-    Write-Host "  gs      - git status"
-    Write-Host "  ga      - git add"
-    Write-Host "  gc      - git commit -m"
-    Write-Host "  gp      - git push"
-    Write-Host "  gpl     - git pull"
-    Write-Host "  gd      - git diff"
-    Write-Host "  gco     - git checkout"
-    Write-Host "  gb      - git branch"
-    Write-Host "  glog    - Pretty git log"
-    Write-Host "  gstash  - git stash"
-    Write-Host "  gpop    - git stash pop"
-    Write-Host "  gclean  - git clean -fd"
+    Write-Host "  ggs     - git status"
+    Write-Host "  gga     - git add"
+    Write-Host "  ggc     - git commit -m"
+    Write-Host "  ggp     - git push"
+    Write-Host "  ggpl    - git pull"
+    Write-Host "  ggd     - git diff"
+    Write-Host "  ggco    - git checkout"
+    Write-Host "  ggb     - git branch"
+    Write-Host "  gglog   - Pretty git log"
+    Write-Host "  ggstash - git stash"
+    Write-Host "  ggpop   - git stash pop"
+    Write-Host "  ggclean - git clean -fd"
     
     Write-Host "`n=== Python ===" -ForegroundColor Yellow
     Write-Host "  py      - python"

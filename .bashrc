@@ -131,19 +131,19 @@ alias ....='cd ../../..'
 alias ~='cd ~'
 alias -- -='cd -'
 
-# Git
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit -m'
-alias gp='git push'
-alias gpl='git pull'
-alias gd='git diff'
-alias gco='git checkout'
-alias gb='git branch'
-alias glog='git log --oneline --graph --decorate --all'
-alias gclean='git clean -fd'
-alias gstash='git stash'
-alias gpop='git stash pop'
+# Git (gg prefix for consistency across shells)
+alias ggs='git status'
+alias gga='git add'
+alias ggc='git commit -m'
+alias ggp='git push'
+alias ggpl='git pull'
+alias ggd='git diff'
+alias ggco='git checkout'
+alias ggb='git branch'
+alias gglog='git log --oneline --graph --decorate --all'
+alias ggclean='git clean -fd'
+alias ggstash='git stash'
+alias ggpop='git stash pop'
 
 # Python
 alias py='python3'
@@ -288,18 +288,18 @@ help-aliases() {
     echo "  lt      - Tree view (2 levels)"
     
     echo -e "\n\e[33m=== Git ===\e[0m"
-    echo "  gs      - git status"
-    echo "  ga      - git add"
-    echo "  gc      - git commit -m"
-    echo "  gp      - git push"
-    echo "  gpl     - git pull"
-    echo "  gd      - git diff"
-    echo "  gco     - git checkout"
-    echo "  gb      - git branch"
-    echo "  glog    - Pretty git log"
-    echo "  gstash  - git stash"
-    echo "  gpop    - git stash pop"
-    echo "  gclean  - git clean -fd"
+    echo "  ggs     - git status"
+    echo "  gga     - git add"
+    echo "  ggc     - git commit -m"
+    echo "  ggp     - git push"
+    echo "  ggpl    - git pull"
+    echo "  ggd     - git diff"
+    echo "  ggco    - git checkout"
+    echo "  ggb     - git branch"
+    echo "  gglog   - Pretty git log"
+    echo "  ggstash - git stash"
+    echo "  ggpop   - git stash pop"
+    echo "  ggclean - git clean -fd"
     
     echo -e "\n\e[33m=== Python ===\e[0m"
     echo "  py      - python3"
