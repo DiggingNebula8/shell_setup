@@ -89,6 +89,34 @@ Check-Command "SCons" "scons"
 Check-Command "pre-commit" "pre-commit"
 
 Write-Host ""
+Write-Host "--- Document Conversion ---" -ForegroundColor Yellow
+Check-Command "Pandoc" "pandoc"
+Check-Command "MiKTeX (pdflatex)" "pdflatex"
+Check-Command "Inkscape" "inkscape"
+
+Write-Host ""
+Write-Host "--- Python Packages ---" -ForegroundColor Yellow
+$pypandoc = pip show pypandoc 2>$null
+if ($pypandoc) {
+    $version = ($pypandoc | Select-String "Version:").ToString().Split(":")[1].Trim()
+    Write-Host "[OK] pypandoc: $version" -ForegroundColor Green
+    $pass++
+} else {
+    Write-Host "[FAIL] pypandoc: not installed" -ForegroundColor Red
+    $fail++
+}
+
+$pyyaml = pip show pyyaml 2>$null
+if ($pyyaml) {
+    $version = ($pyyaml | Select-String "Version:").ToString().Split(":")[1].Trim()
+    Write-Host "[OK] pyyaml: $version" -ForegroundColor Green
+    $pass++
+} else {
+    Write-Host "[FAIL] pyyaml: not installed" -ForegroundColor Red
+    $fail++
+}
+
+Write-Host ""
 Write-Host "--- Config Files ---" -ForegroundColor Yellow
 Check-File "PowerShell Profile" $PROFILE
 Check-File "Starship config" "$HOME\.config\starship.toml"

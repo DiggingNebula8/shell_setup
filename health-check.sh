@@ -76,6 +76,32 @@ check "SCons" "scons"
 check "pre-commit" "pre-commit"
 
 echo ""
+echo "--- Document Conversion ---"
+check "Pandoc" "pandoc"
+check "TeX Live (pdflatex)" "pdflatex"
+check "Inkscape" "inkscape"
+
+echo ""
+echo "--- Python Packages ---"
+if pip3 show pypandoc &> /dev/null; then
+    version=$(pip3 show pypandoc | grep "Version:" | cut -d' ' -f2)
+    echo "[OK] pypandoc: $version"
+    ((PASS++))
+else
+    echo "[FAIL] pypandoc: not installed"
+    ((FAIL++))
+fi
+
+if pip3 show pyyaml &> /dev/null; then
+    version=$(pip3 show pyyaml | grep "Version:" | cut -d' ' -f2)
+    echo "[OK] pyyaml: $version"
+    ((PASS++))
+else
+    echo "[FAIL] pyyaml: not installed"
+    ((FAIL++))
+fi
+
+echo ""
 echo "--- Config Files ---"
 check_file "~/.bashrc" "$HOME/.bashrc"
 check_file "Starship config" "$HOME/.config/starship.toml"

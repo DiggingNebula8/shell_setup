@@ -76,22 +76,79 @@ scoop install git
 # Add software repositories
 scoop bucket add extras
 scoop bucket add nerd-fonts
+```
 
-# Install development tools
-scoop install starship CascadiaCode-NF-Mono python cmake ninja llvm mingw make scons
+#### Shell & Fonts
 
-# Install Python-based tools (pre-commit, scons for Godot/game engines)
-pip install pre-commit scons
+```powershell
+# Starship - fast, customizable cross-shell prompt
+scoop install starship
+
+# CascadiaCode NF Mono - Nerd Font with icons for terminal
+scoop install CascadiaCode-NF-Mono
+```
+
+#### Python
+
+```powershell
+# Python interpreter
+scoop install python
+
+# pre-commit - Git hooks for code quality checks
+# pypandoc - Python bindings for Pandoc document conversion
+# pyyaml - YAML parser for config files
+pip install pre-commit pypandoc pyyaml
+```
+
+#### C/C++ Build Tools
+
+```powershell
+# CMake - cross-platform build system generator
+scoop install cmake
+
+# Ninja - fast build system (used with CMake)
+scoop install ninja
+
+# LLVM/Clang - modern C/C++ compiler toolchain
+scoop install llvm
+
+# MinGW - GCC compiler for Windows
+scoop install mingw
+
+# Make - classic build automation tool
+scoop install make
+
+# SCons - Python-based build tool (used by Godot)
+scoop install scons
+```
+
+#### Document Conversion
+
+```powershell
+# Pandoc - universal document converter (Markdown, HTML, PDF, etc.)
+scoop install pandoc
+
+# MiKTeX - LaTeX distribution for PDF generation
+scoop install miktex
+
+# Inkscape - SVG editor, also used for SVG-to-PDF conversion
+scoop install inkscape
 ```
 
 **Verification**:
 
 ```powershell
 scoop list
-# Should show git, starship, python, cmake, ninja, llvm, mingw, make, scons, etc.
+# Should show git, starship, python, cmake, ninja, llvm, mingw, make, scons, pandoc, miktex, etc.
 
 pre-commit --version
 # Should show pre-commit version
+
+pandoc --version
+# Should show pandoc version
+
+pdflatex --version
+# Should show MiKTeX/pdflatex version
 ```
 
 ---
@@ -535,29 +592,77 @@ Apply changes: Close and reopen PowerShell
 **Environment**: Debian (Bash)  
 **Privilege**: User (with sudo)
 
+#### C/C++ Build Tools
+
 ```bash
-# Install build tools
+# CMake - cross-platform build system generator
+# Ninja - fast build system (used with CMake)
+# Clang/GCC - C/C++ compilers
+# Make - classic build automation tool
+# SCons - Python-based build tool (used by Godot)
 sudo apt install -y cmake ninja-build clang gcc g++ make scons
+```
 
-# Install Python-based tools (pre-commit, scons for Godot/game engines)
-pip install pre-commit scons
+#### Document Conversion
 
-# Install modern replacements for classic tools
-sudo apt install -y \
-  fzf \           # Fuzzy finder
-  bat \           # Better cat
-  ripgrep \       # Better grep
-  fd-find \       # Better find
-  tldr \          # Simple man pages
-  htop \          # Better top
-  ncdu            # Disk usage
+```bash
+# Pandoc - universal document converter
+sudo apt install -y pandoc
 
-# Install eza (modern ls replacement, successor to exa)
+# TeX Live - LaTeX distribution for PDF generation
+sudo apt install -y texlive texlive-latex-extra texlive-fonts-recommended
+
+# Inkscape - SVG editor, also used for SVG-to-PDF conversion
+sudo apt install -y inkscape
+```
+
+#### Python Tools
+
+```bash
+# pre-commit - Git hooks for code quality checks
+# pypandoc - Python bindings for Pandoc
+# pyyaml - YAML parser for config files
+pip install pre-commit pypandoc pyyaml
+```
+
+#### Modern CLI Replacements
+
+```bash
+# fzf - fuzzy finder for files and history
+sudo apt install -y fzf
+
+# bat - better cat with syntax highlighting
+sudo apt install -y bat
+
+# ripgrep - faster grep with smart defaults
+sudo apt install -y ripgrep
+
+# fd-find - faster, user-friendly find
+sudo apt install -y fd-find
+
+# tldr - simplified man pages with examples
+sudo apt install -y tldr
+
+# htop - interactive process viewer
+sudo apt install -y htop
+
+# ncdu - disk usage analyzer
+sudo apt install -y ncdu
+```
+
+#### Modern ls Replacement
+
+```bash
+# eza - modern ls with icons and git integration (successor to exa)
 # Note: eza may need to be installed from a different source on Debian
 # See: https://github.com/eza-community/eza
 # Fallback: sudo apt install exa (if available)
+```
 
-# Install autojump (smart directory navigation)
+#### Directory Navigation
+
+```bash
+# autojump - smart directory jumping based on frecency
 sudo apt install -y autojump
 ```
 
