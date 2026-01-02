@@ -95,6 +95,11 @@ Check-Command "MiKTeX (pdflatex)" "pdflatex"
 Check-Command "Inkscape" "inkscape"
 
 Write-Host ""
+Write-Host "--- AI Tools ---" -ForegroundColor Yellow
+Check-Command "Ollama" "ollama"
+Check-Command "Opencode" "opencode"
+
+Write-Host ""
 Write-Host "--- Python Packages ---" -ForegroundColor Yellow
 $pypandoc = pip show pypandoc 2>$null
 if ($pypandoc) {

@@ -82,6 +82,11 @@ check "TeX Live (pdflatex)" "pdflatex"
 check "Inkscape" "inkscape"
 
 echo ""
+echo "--- AI Tools ---"
+check "Ollama" "ollama"
+check "Opencode" "opencode"
+
+echo ""
 echo "--- Python Packages ---"
 if pip3 show pypandoc &> /dev/null; then
     version=$(pip3 show pypandoc | grep "Version:" | cut -d' ' -f2)

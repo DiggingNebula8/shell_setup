@@ -135,11 +135,21 @@ scoop install miktex
 scoop install inkscape
 ```
 
+#### AI & Coding Assistants
+
+```powershell
+# Ollama - Local LLM runner
+scoop install ollama
+
+# Opencode - AI coding agent
+scoop install opencode
+```
+
 **Verification**:
 
 ```powershell
 scoop list
-# Should show git, starship, python, cmake, ninja, llvm, mingw, make, scons, pandoc, miktex, etc.
+# Should show git, starship, python, cmake, ninja, llvm, mingw, make, scons, pandoc, miktex, ollama, opencode, etc.
 
 pre-commit --version
 # Should show pre-commit version
@@ -614,6 +624,16 @@ sudo apt install -y texlive texlive-latex-extra texlive-fonts-recommended
 
 # Inkscape - SVG editor, also used for SVG-to-PDF conversion
 sudo apt install -y inkscape
+```
+
+#### AI & Coding Assistants
+
+```bash
+# Ollama - Local LLM runner
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Opencode - AI coding agent
+curl -fsSL https://opencode.ai/install | bash
 ```
 
 #### Python Tools
