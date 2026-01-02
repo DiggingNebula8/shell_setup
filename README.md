@@ -861,6 +861,8 @@ ollama pull qwen3-coder:30b
 > curl http://localhost:11434/api/tags
 > ```
 
+> **Tip**: The default context may be too small for coding. Increase it in Ollama settings (tray icon → Settings → Context Length).
+
 ---
 
 ### 8.2 Configure Opencode
