@@ -86,6 +86,25 @@ echo "--- AI Tools ---"
 check "Ollama" "ollama"
 check "Opencode" "opencode"
 
+# Check Ollama server status
+if curl -s http://localhost:11434/api/tags &> /dev/null; then
+    echo "[OK] Ollama server: running"
+    ((PASS++))
+    
+    # Check if qwen3-coder model is available
+    if ollama list 2>/dev/null | grep -q "qwen3-coder"; then
+        echo "[OK] Ollama model: qwen3-coder found"
+        ((PASS++))
+    else
+        echo "[WARN] Ollama model: qwen3-coder not found (run: ollama pull qwen3-coder:30b)"
+    fi
+else
+    echo "[WARN] Ollama server: not running (run: ollama serve)"
+fi
+
+# Check Opencode config
+check_file "Opencode config" "$HOME/.config/opencode/opencode.json"
+
 echo ""
 echo "--- Python Packages ---"
 if pip3 show pypandoc &> /dev/null; then

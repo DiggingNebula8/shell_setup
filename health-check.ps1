@@ -99,6 +99,27 @@ Write-Host "--- AI Tools ---" -ForegroundColor Yellow
 Check-Command "Ollama" "ollama"
 Check-Command "Opencode" "opencode"
 
+# Check Ollama server status
+try {
+    $response = Invoke-RestMethod -Uri "http://localhost:11434/api/tags" -TimeoutSec 2 -ErrorAction SilentlyContinue
+    Write-Host "[OK] Ollama server: running" -ForegroundColor Green
+    $pass++
+    
+    # Check if qwen3-coder model is available
+    $models = ollama list 2>$null
+    if ($models -match "qwen3-coder") {
+        Write-Host "[OK] Ollama model: qwen3-coder found" -ForegroundColor Green
+        $pass++
+    } else {
+        Write-Host "[WARN] Ollama model: qwen3-coder not found (run: ollama pull qwen3-coder:30b)" -ForegroundColor Yellow
+    }
+} catch {
+    Write-Host "[WARN] Ollama server: not running (run: ollama serve)" -ForegroundColor Yellow
+}
+
+# Check Opencode config
+Check-File "Opencode config" "$HOME\.config\opencode\opencode.json"
+
 Write-Host ""
 Write-Host "--- Python Packages ---" -ForegroundColor Yellow
 $pypandoc = pip show pypandoc 2>$null
