@@ -18,10 +18,12 @@
 6. [Part 5: VS Code WSL Integration](#part-5-vs-code-wsl-integration)
 7. [Part 6: Advanced Shell Configuration](#part-6-advanced-shell-configuration)
 8. [Part 7: Standard Development Workflows](#part-7-standard-development-workflows)
-9. [Troubleshooting](#troubleshooting)
-10. [Maintenance & Updates](#maintenance--updates)
-11. [Next Steps](#next-steps)
-12. [Additional Resources](#additional-resources)
+9. [Part 8: AI Agent Configuration](#part-8-ai-agent-configuration-ollama--opencode)
+10. [Troubleshooting](#troubleshooting)
+11. [Maintenance & Updates](#maintenance--updates)
+12. [Next Steps](#next-steps)
+13. [Additional Resources](#additional-resources)
+
 
 ---
 
@@ -825,6 +827,151 @@ code .
 ```
 
 **Deactivate**: `deactivate`
+
+---
+
+## Part 8: AI Agent Configuration (Ollama + Opencode)
+
+This section configures Opencode to use a local Ollama server with the `qwen3-coder:30b` model for AI-assisted coding.
+
+### 8.1 Start Ollama Server & Pull Model
+
+#### PowerShell (Windows)
+
+```powershell
+# Start Ollama server (runs in background)
+ollama serve
+
+# In a new terminal, pull the coding model
+ollama pull qwen3-coder:30b
+```
+
+#### WSL (Debian/Linux)
+
+```bash
+# Start Ollama server (runs in background)
+ollama serve &
+
+# Pull the coding model
+ollama pull qwen3-coder:30b
+```
+
+> **Note**: The server must be running before using Opencode. You can verify with:
+> ```bash
+> curl http://localhost:11434/api/tags
+> ```
+
+---
+
+### 8.2 Configure Opencode
+
+Opencode uses `.opencode.json` for configuration. It can be placed globally at `~/.config/opencode/opencode.json` or per-project as `.opencode.json` in the project root.
+
+#### PowerShell (Windows)
+
+```powershell
+# Create config directory
+New-Item -ItemType Directory -Force -Path "$HOME/.config/opencode"
+
+# Create/edit config file
+code "$HOME/.config/opencode/opencode.json"
+```
+
+Add the following configuration:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3-coder:30b": {
+          "name": "Qwen3 Coder 30B",
+          "tool_call": true
+        }
+      }
+    }
+  },
+  "agent": {
+    "default": {
+      "model": "ollama/qwen3-coder:30b"
+    },
+    "build": {
+      "model": "ollama/qwen3-coder:30b"
+    },
+    "plan": {
+      "model": "ollama/qwen3-coder:30b"
+    }
+  }
+}
+```
+
+#### WSL (Debian/Linux)
+
+```bash
+# Create config directory and file
+mkdir -p ~/.config/opencode
+cat > ~/.config/opencode/opencode.json << 'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3-coder:30b": {
+          "name": "Qwen3 Coder 30B",
+          "tool_call": true
+        }
+      }
+    }
+  },
+  "agent": {
+    "default": {
+      "model": "ollama/qwen3-coder:30b"
+    },
+    "build": {
+      "model": "ollama/qwen3-coder:30b"
+    },
+    "plan": {
+      "model": "ollama/qwen3-coder:30b"
+    }
+  }
+}
+EOF
+```
+
+> **Note**: You can also create a `.opencode.json` file in any project directory to override the global config.
+
+---
+
+### 8.3 Using Opencode
+
+Navigate to any project directory and launch:
+
+```bash
+# Start the AI coding agent
+opencode
+```
+
+**Verification**:
+
+```bash
+# Check Ollama is running and model is available
+ollama list
+# Should show qwen3-coder:30b
+
+# Test Opencode
+opencode --version
+```
+
+> **Tip**: For best performance, ensure you have sufficient GPU VRAM (16GB+ recommended for 30B model) or system RAM for CPU inference.
 
 ---
 
