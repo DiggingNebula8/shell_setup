@@ -1,0 +1,62 @@
+# =============================================================================
+# Qwen Coder - Lead Profile
+# Optimized for: NVIDIA RTX 5080 (16GB VRAM)
+# Model: Qwen3-Coder-30B-A3B-Instruct (IQ3_XXS quantization, ~12.8GB)
+# =============================================================================
+
+# Base model: Pull directly from Hugging Face via Ollama
+FROM hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:IQ3_XXS
+
+# =============================================================================
+# CONTEXT & MEMORY SETTINGS
+# =============================================================================
+
+# Context window: 32K tokens
+# With KV cache quantization (q8_0) enabled in shell profile, this fits in 16GB VRAM
+# Model ~12.8GB + quantized KV cache for 32K context
+PARAMETER num_ctx 32768
+
+# Number of tokens to keep from initial prompt (for context preservation)
+PARAMETER num_keep 256
+
+# Batch size for prompt processing
+PARAMETER num_batch 512
+
+# =============================================================================
+# GENERATION PARAMETERS
+# =============================================================================
+
+# Temperature: Lower = more deterministic (good for code)
+# Range: 0.0-2.0, default is 0.8
+PARAMETER temperature 0.3
+
+# Top-p (nucleus sampling): Focus on high-probability tokens
+PARAMETER top_p 0.9
+
+# Top-k: Limit vocabulary to top K tokens (0 = disabled)
+PARAMETER top_k 40
+
+# Repeat penalty: Reduce repetitive output
+PARAMETER repeat_penalty 1.1
+
+# System prompt optimized for coding assistance
+SYSTEM """You are Qwen Coder, an expert AI programming assistant.
+
+Core behaviors:
+- Write clean, efficient, well-documented code
+- Follow language idioms and best practices
+- Explain your reasoning when solving complex problems
+- Ask clarifying questions when requirements are ambiguous
+- Suggest improvements and identify potential issues
+
+When writing code:
+- Include type hints where applicable
+- Add concise comments for complex logic
+- Handle errors appropriately
+- Consider edge cases
+
+When debugging:
+- Analyze the problem systematically
+- Explain the root cause
+- Provide a clear fix with explanation
+"""

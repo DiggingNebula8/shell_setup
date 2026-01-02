@@ -8,6 +8,13 @@ if (Get-Command starship -ErrorAction SilentlyContinue) {
 }
 
 # ============================================================
+# Ollama GPU Optimizations (RTX 5080)
+# ============================================================
+$env:OLLAMA_FLASH_ATTENTION = "1"      # Enable Flash Attention 2
+$env:OLLAMA_KV_CACHE_TYPE = "q8_0"     # Quantize KV cache to 8-bit
+
+
+# ============================================================
 # Module Imports (with guards for graceful degradation)
 # ============================================================
 

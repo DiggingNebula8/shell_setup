@@ -581,7 +581,7 @@ echo $PROFILE
 # Typical location: ~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
 ```
 
-📄 **See the full profile:** [Microsoft.PowerShell_profile.ps1](Microsoft.PowerShell_profile.ps1)
+**See the full profile:** [Microsoft.PowerShell_profile.ps1](Microsoft.PowerShell_profile.ps1)
 
 This profile includes:
 - Starship prompt initialization
@@ -832,128 +832,79 @@ code .
 
 ## Part 8: AI Agent Configuration (Ollama + Opencode)
 
-This section configures Opencode to use a local Ollama server with the `qwen3-coder:30b` model for AI-assisted coding.
+This section configures Opencode to use a local Ollama server with a custom coding model optimized for your RTX 5080.
 
-### 8.1 Start Ollama Server & Pull Model
+| Model | Specs | Use Case |
+|-------|-------|----------|
+| **Qwen3-Coder-30B** | 30B params, IQ3_XXS (~12.8GB), 16K context | Coding agent with tool calling support |
 
-#### PowerShell (Windows)
+> **Note**: GPU optimizations (Flash Attention, KV cache quantization) are already configured in your shell profiles:
+> - PowerShell: [Microsoft.PowerShell_profile.ps1](Microsoft.PowerShell_profile.ps1)
+> - Bash/WSL: [.bashrc](.bashrc)
 
-```powershell
-# Start Ollama server (runs in background)
+---
+
+### 8.1 Start Ollama Server
+
+Start the Ollama server (GPU optimizations are already set in your shell profile):
+
+```bash
 ollama serve
-
-# In a new terminal, pull the coding model
-ollama pull qwen3-coder:30b
 ```
 
-#### WSL (Debian/Linux)
-
-```bash
-# Start Ollama server (runs in background)
-ollama serve &
-
-# Pull the coding model
-ollama pull qwen3-coder:30b
-```
-
-> **Note**: The server must be running before using Opencode. You can verify with:
-> ```bash
-> curl http://localhost:11434/api/tags
-> ```
-
-> **Tip**: The default context may be too small for coding. Increase it in Ollama settings (tray icon → Settings → Context Length).
+> **Note**: The model will be automatically pulled from HuggingFace when you create it in step 8.2.
 
 ---
 
-### 8.2 Configure Opencode
+### 8.2 Create Custom Model from Modelfile
 
-Opencode uses `.opencode.json` for configuration. It can be placed globally at `~/.config/opencode/opencode.json` or per-project as `.opencode.json` in the project root.
+A Modelfile lets you customize model behavior with parameters like context length, temperature, and system prompts.
 
-#### PowerShell (Windows)
+**See the full Modelfile:** [Modelfile.qwen-coder](Modelfile.qwen-coder)
 
+#### Copy and Build the Model
+
+```bash
+# From this repo directory:
+cd /path/to/shell_setup
+
+# Create custom model from Modelfile
+ollama create qwen-coder-lead -f ./Modelfile.qwen-coder
+
+# Verify model was created
+ollama list
+# Should show: qwen-coder-lead
+```
+
+> **Tip**: "Lead" is your daily driver model. Later, add "Architect" for complex tasks.
+
+---
+
+### 8.3 Configure Opencode
+
+Opencode uses `.opencode.json` for configuration. Copy the config from this repo to your global config location:
+
+**See the full config:** [opencode.json](opencode.json)
+
+**PowerShell:**
 ```powershell
-# Create config directory
+# Copy config from repo to global location
 New-Item -ItemType Directory -Force -Path "$HOME/.config/opencode"
-
-# Create/edit config file
-code "$HOME/.config/opencode/opencode.json"
+Copy-Item ./opencode.json "$HOME/.config/opencode/opencode.json"
 ```
 
-Add the following configuration:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://localhost:11434/v1"
-      },
-      "models": {
-        "qwen3-coder:30b": {
-          "name": "Qwen3 Coder 30B",
-          "tool_call": true
-        }
-      }
-    }
-  },
-  "agent": {
-    "default": {
-      "model": "ollama/qwen3-coder:30b"
-    },
-    "build": {
-      "model": "ollama/qwen3-coder:30b"
-    },
-    "plan": {
-      "model": "ollama/qwen3-coder:30b"
-    }
-  }
-}
-```
-
-#### WSL (Debian/Linux)
-
+**Bash/WSL:**
 ```bash
-# Create config directory and file
+# Copy config from repo to global location
 mkdir -p ~/.config/opencode
-cat > ~/.config/opencode/opencode.json << 'EOF'
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://localhost:11434/v1"
-      },
-      "models": {
-        "qwen3-coder:30b": {
-          "name": "Qwen3 Coder 30B",
-          "tool_call": true
-        }
-      }
-    }
-  },
-  "agent": {
-    "default": {
-      "model": "ollama/qwen3-coder:30b"
-    },
-    "build": {
-      "model": "ollama/qwen3-coder:30b"
-    },
-    "plan": {
-      "model": "ollama/qwen3-coder:30b"
-    }
-  }
-}
-EOF
+cp ./opencode.json ~/.config/opencode/opencode.json
 ```
 
-> **Note**: You can also create a `.opencode.json` file in any project directory to override the global config.
+> **Tip**: Create a `.opencode.json` in any project directory to override the global config.
 
 ---
 
-### 8.3 Using Opencode
+### 8.4 Using Opencode
 
 Navigate to any project directory and launch:
 
@@ -965,15 +916,72 @@ opencode
 **Verification**:
 
 ```bash
-# Check Ollama is running and model is available
+# Check custom model is available
 ollama list
-# Should show qwen3-coder:30b
+# Should show: qwen-coder-lead
+
+# Test the model directly
+ollama run qwen-coder-lead "Write a Python hello world"
 
 # Test Opencode
 opencode --version
 ```
 
-> **Tip**: For best performance, ensure you have sufficient GPU VRAM (16GB+ recommended for 30B model) or system RAM for CPU inference.
+---
+
+### 8.5 Future: Adding Architect Model
+
+When you want to add a second model for complex reasoning and architecture tasks, follow this pattern:
+
+#### Download from Hugging Face
+
+```bash
+# Example: Download Qwen3-Coder-30B-Instruct-Q3_K_M.gguf from Hugging Face
+# Place in a known directory, then import
+
+ollama create qwen-coder-architect -f ~/Modelfile.qwen-coder-architect
+```
+
+#### Create Architect Modelfile
+
+```bash
+cat > ~/Modelfile.qwen-coder-architect << 'EOF'
+# Architect model for complex reasoning and design tasks
+FROM /path/to/Qwen3-Coder-30B-Instruct-Q3_K_M.gguf
+
+# Shorter context but higher quality reasoning
+PARAMETER num_ctx 16384
+
+# Lower temperature for precise, deterministic solutions
+PARAMETER temperature 0.2
+
+SYSTEM """You are an expert software architect and coding assistant.
+Focus on correctness, design patterns, edge cases, and high-quality solutions."""
+EOF
+```
+
+#### Update Opencode Config
+
+Add the new model to your `opencode.json`:
+
+```json
+{
+  "models": {
+    "qwen-coder-lead": {
+      "name": "Qwen Coder (Lead)",
+      "tool_call": true
+    },
+    "qwen-coder-architect": {
+      "name": "Qwen Coder (Architect)",
+      "tool_call": true
+    }
+  }
+}
+```
+
+> **Tip**: Switch between models in Opencode based on your task:
+> - Use **Lead** for everyday coding, refactoring large files, understanding codebases
+> - Use **Architect** for complex logic, debugging tricky issues, architecture decisions
 
 ---
 

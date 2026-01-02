@@ -1,0 +1,28 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen-coder-lead": {
+          "name": "Qwen3 Coder 30B (Lead)",
+          "tool_call": true
+        }
+      }
+    }
+  },
+  "agent": {
+    "default": {
+      "model": "ollama/qwen-coder-lead"
+    },
+    "build": {
+      "model": "ollama/qwen-coder-lead"
+    },
+    "plan": {
+      "model": "ollama/qwen-coder-lead"
+    }
+  }
+}
